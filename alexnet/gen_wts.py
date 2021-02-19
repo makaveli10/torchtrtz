@@ -39,7 +39,7 @@ def generate_weights(opt):
 if __name__=="__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--weights', nargs='+', type=str, default='alexnet.pth', help='pytorch weights model.pth path(s)')
-    parser.add_argument('--save-trt-weights', type=str, default='alexnet.wts', help='save path for tensorrt weights')  # file/folder, 0 for webcam
+    parser.add_argument('--save-trt-weights', type=str, default='alexnet.wts', help='save path for tensorrt weights')
     opt = parser.parse_args()
     print(opt)
     generate_weights(opt)
