@@ -23,6 +23,7 @@ class VGG16:
 
     def print_summary(self):
         print(summary(self.__model, input_size=(3, 224, 224)))
+        print(self.__model)
 
     def save_weights(self, save_path=None):
         if save_path is None:
@@ -43,7 +44,8 @@ class VGG16:
 
 if __name__=="__main__":
     vgg = VGG16()
-    vgg.save_weights()
+    # vgg.save_weights()
     vgg.print_summary()
+    print(vgg._)
     out = vgg.infer()
     print(out.shape)

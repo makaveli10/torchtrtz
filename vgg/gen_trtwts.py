@@ -17,8 +17,7 @@ def generate_weights(opt):
 
     # write length of keys
     print("Keys: ", model.state_dict().keys())
-    f.write("{}\n".format(model.state_dict().keys()))
-
+    f.write("{}\n".format(len(model.state_dict().keys())))
     for key, val in model.state_dict().items():
         print("Key: {}, Val: {}".format(key, val.shape))
         vval = val.reshape(-1).cpu().numpy()
@@ -28,7 +27,7 @@ def generate_weights(opt):
 
             # struct.pack Returns a bytes object containing the values v1, v2, … 
             # packed according to the format string format (>big endian in this case).
-            f.write(struct.pack('>f', float(v)).hex())
+            f.write(struct.pack(">f", float(v)).hex())
         f.write("\n")
 
 if __name__=="__main__":
