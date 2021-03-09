@@ -10,8 +10,8 @@ class VGG16:
     def __init__(self, batch_norm=False):
         self.__model = models.vgg16_bn(pretrained=True) if batch_norm else models.vgg16(pretrained=True)
         self.__bn = batch_norm
-        self.__model.eval()
         self.__model.cuda()
+        self.__model.eval()
 
     def __preprocess(self):
         transform = T.Compose([T.Resize(256),
@@ -46,6 +46,5 @@ if __name__=="__main__":
     vgg = VGG16()
     # vgg.save_weights()
     vgg.print_summary()
-    print(vgg._)
     out = vgg.infer()
-    print(out.shape)
+    print(out[0][:5])

@@ -39,8 +39,7 @@ class AlexNet:
 
 if __name__=="__main__":
     alex = AlexNet()
-    # image = Image.open("zidane.jpg")
     out = alex.infer()
-    print(out[0], out[0].shape)
     print(alex.print_summary())
     alex.save_weights()
+    print(out[0], out[0].shape)
