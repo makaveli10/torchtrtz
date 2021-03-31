@@ -33,12 +33,13 @@ class DenseNet:
             print("Saved Weights: ", save_path)
 
     def infer(self, image=None):
-        if image:
-            image = self.__preprocess(image=image)
-            image = image.unsqueeze(axis=0)
-        else:
-            image = torch.ones(1, 3, 224, 224).cuda()
-        return self.__model(image)
+        with torch.no_grad():
+            if image:
+                image = self.__preprocess(image=image)
+                image = image.unsqueeze(axis=0)
+            else:
+                image = torch.ones(1, 3, 224, 224).cuda()
+            return self.__model(image)
 
 
 if __name__=="__main__":
