@@ -17,7 +17,7 @@ class DenseNet:
         self._model = densenet121(pretrained=True)
 
         # Set model to eval mode
-        # self._model.cuda()
+        self._model.cuda()
         self._model.eval()
 
     @property
