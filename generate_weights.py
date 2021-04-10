@@ -44,6 +44,9 @@ class Model:
         elif model_name == "AlexNet":
             from models.alexnet import AlexNet
             self._model = AlexNet().model
+        elif model_name == "Inceptionv4":
+            from models.inception_v4 import InceptionV4
+            self._model = InceptionV4().model
 
     def generate_weights(self, opt: argparse.Namespace) -> None:
         """Convert torch weights format to wts weights format
