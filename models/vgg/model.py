@@ -1,50 +1,31 @@
-import torch
 import os
+from torch.nn import Module
 import torchvision.models as models
-from torchvision import transforms as T
 from torchsummary import summary
-from PIL import Image
 
 
 class VGG16:
-    def __init__(self, batch_norm=False):
-        self.__model = models.vgg16_bn(pretrained=True) if batch_norm else models.vgg16(pretrained=True)
-        self.__bn = batch_norm
-        self.__model.cuda()
-        self.__model.eval()
+    def __init__(self, batch_norm=False) -> None:
+        self.model = batch_norm
+        self._bn = batch_norm
 
-    def __preprocess(self):
-        transform = T.Compose([T.Resize(256),
-                               T.CenterCrop(224), 
-                               T.ToTensor(),
-                               T.Normalize(mean=[0.485, 0.456, 0.406],
-                                           std=[0.229, 0.224, 0.225])])
-        return transform(image).cuda()
+        # Set model to eval mode
+        self._model.cuda()
+        self._model.eval()
 
-    def print_summary(self):
-        print(summary(self.__model, input_size=(3, 224, 224)))
-        print(self.__model)
+    @property
+    def model(self) -> Module:
+        return self._model
 
-    def save_weights(self, save_path=None):
-        if save_path is None:
-            save_path = "vgg16_bn.pth" if self.__bn else "vgg16.pth"
-        
-        if not os.path.exists(save_path):
-            torch.save(self.__model, save_path)
-            print("Saved Weights: ", save_path)
+    @model.setter
+    def model(self, batch_norm: bool) -> None:
+        self._model = models.vgg16_bn(
+            pretrained=True) if batch_norm else models.vgg16(pretrained=True)
 
-    def infer(self, image=None):
-        if image:
-            image = self.__preprocess(image=image)
-            image = image.unsqueeze(axis=0)
-        else:
-            image = torch.ones(1, 3, 224, 224).cuda()
-        return self.__model(image)
+    def print_summary(self) -> None:
+        print(summary(self._model, input_size=(3, 224, 224)))
 
 
-if __name__=="__main__":
+if __name__ == "__main__":
     vgg = VGG16()
-    # vgg.save_weights()
-    vgg.print_summary()
-    out = vgg.infer()
-    print(out[0][:5])
+    print(type(vgg.model))
