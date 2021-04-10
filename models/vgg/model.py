@@ -17,7 +17,8 @@ class VGG16:
         Args:
             batch_norm (bool, optional): Include batch normalization layer. Defaults to False.
         """
-        self.model = batch_norm
+        self._model = models.vgg16_bn(
+            pretrained=True) if batch_norm else models.vgg16(pretrained=True)
         self._bn = batch_norm
 
         # Set model to eval mode
@@ -32,16 +33,6 @@ class VGG16:
             Module: torch model
         """
         return self._model
-
-    @model.setter
-    def model(self, batch_norm: bool) -> None:
-        """Setter for the model. Loads model based on the bool value of batch normalization.
-
-        Args:
-            batch_norm (bool): Include batch normalization layer.
-        """
-        self._model = models.vgg16_bn(
-            pretrained=True) if batch_norm else models.vgg16(pretrained=True)
 
     def print_summary(self) -> None:
         """Print summary of the model.
