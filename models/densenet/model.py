@@ -1,50 +1,40 @@
-import torch
-import os
-import torchvision.models as models
-from torchvision import transforms as T
-from torchinfo import summary
-from PIL import Image
+"""Load DenseNet121 model and return it.
+
+Returns:
+    Module: Torch Module of DenseNet121.
+"""
+from torch.nn import Module
+from torchsummary import summary
+from torchvision.models import densenet121
 
 
 class DenseNet:
-    def __init__(self):
-        self.__model = models.densenet121(pretrained=True)
-        self.__model.cuda()
-        self.__model.eval()
+    """Loads DenseNet121 model.
+    """
+    def __init__(self) -> None:
+        """Initialize densenet121 model.
+        """
+        self._model = densenet121(pretrained=True)
 
-    def __preprocess(self):
-        transform = T.Compose([T.Resize(256),
-                               T.CenterCrop(224), 
-                               T.ToTensor(),
-                               T.Normalize(mean=[0.485, 0.456, 0.406],
-                                           std=[0.229, 0.224, 0.225])])
-        return transform(image).cuda()
+        # Set model to eval mode
+        # self._model.cuda()
+        self._model.eval()
 
-    def print_summary(self):
-        print(summary(self.__model, input_size=(1, 3, 224, 224)))
-        print(self.__model)
+    @property
+    def model(self) -> Module:
+        """Getter for the model
 
-    def save_weights(self, save_path=None):
-        if save_path is None:
-            save_path = "densenet121.pth"
-        
-        if not os.path.exists(save_path):
-            torch.save(self.__model, save_path)
-            print("Saved Weights: ", save_path)
+        Returns:
+            Module: torch model
+        """
+        return self._model
 
-    def infer(self, image=None):
-        with torch.no_grad():
-            if image:
-                image = self.__preprocess(image=image)
-                image = image.unsqueeze(axis=0)
-            else:
-                image = torch.ones(1, 3, 224, 224).cuda()
-            return self.__model(image)
+    def print_summary(self) -> None:
+        """Print summary of the model.
+        """
+        print(summary(self._model, input_size=(3, 224, 224)))
 
 
-if __name__=="__main__":
+if __name__ == "__main__":
     dn = DenseNet()
-    dn.save_weights()
-    dn.print_summary()
-    out = dn.infer()
-    print(out[0][:5])
+    print(dn.model)
