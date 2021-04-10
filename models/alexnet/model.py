@@ -1,45 +1,40 @@
-import torch
-import os
-import torchvision.models as models
-from torchvision import transforms as T
+"""Load AlexNet model and return it.
+
+Returns:
+    Module: Torch Module of AlexNet.
+"""
+from torch.nn import Module
 from torchsummary import summary
-from PIL import Image
+from torchvision.models import alexnet
+
 
 class AlexNet:
-    def __init__(self):
-        self.__model = models.alexnet(pretrained=True)
-        self.__model.eval()
-        self.__model.cuda()
+    """Loads AlexNet model.
+    """
+    def __init__(self) -> None:
+        """Initialize AlexNet model.
+        """
+        self._model = alexnet(pretrained=True)
 
-    def __preprocess(self, image):
-        transform = T.Compose([T.Resize(256),
-                               T.CenterCrop(224), 
-                               T.ToTensor(),
-                               T.Normalize(mean=[0.485, 0.456, 0.406],
-                                           std=[0.229, 0.224, 0.225])])
-        return transform(image).cuda()
+        # Set model to eval mode
+        self._model.cuda()
+        self._model.eval()
 
-    def print_summary(self):
-        print(summary(self.__model, input_size=(3, 224, 224)))
+    @property
+    def model(self) -> Module:
+        """Getter for the model
 
-    
-    def save_weights(self, save_path="alexnet.pth"):
-        if not os.path.exists(save_path):
-            torch.save(self.__model, save_path)
-            print("Saved Weights: ", save_path)
+        Returns:
+            Module: torch model
+        """
+        return self._model
 
-    def infer(self, image=None):
-        if image:
-            image = self.__preprocess(image=image)
-            image = image.unsqueeze(axis=0)
-        else:
-            image = torch.ones(1, 3, 224, 224).cuda()
-        return self.__model(image)
+    def print_summary(self) -> None:
+        """Print summary of the model.
+        """
+        print(summary(self._model, input_size=(3, 224, 224)))
 
 
-if __name__=="__main__":
+if __name__ == "__main__":
     alex = AlexNet()
-    out = alex.infer()
     print(alex.print_summary())
-    alex.save_weights()
-    print(out[0], out[0].shape)
