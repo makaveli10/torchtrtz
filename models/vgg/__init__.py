@@ -1,1 +1,1 @@
-from
+from .model import VGG16
