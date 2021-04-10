@@ -26,3 +26,12 @@ Example VGG:
  $ python models.py
  $ python gen_trtwts.py
 ```
+
+
+### TODO
+1. Check whether the weights are compatible without cuda.
+2. Re-structure the code and include only one main file with cmd arguments.
+3. Add multiple models based on their no of layers.
+4. torchsummary doesn't work with densenet.
+5. Add function to load custom weights for each network. 
+6. Fix pylint linting score for generate_weights.py
