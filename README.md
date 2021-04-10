@@ -33,3 +33,4 @@ Example VGG:
 2. Re-structure the code and include only one main file with cmd arguments.
 3. Add multiple models based on their no of layers.
 4. torchsummary doesn't work with densenet.
+5. Add function to load custom weights for each network. 
