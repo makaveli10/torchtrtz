@@ -1,11 +1,22 @@
-import os
+"""Load VGG16 model and return it.
+
+Returns:
+    Module: Torch Module of VGG16.
+"""
 from torch.nn import Module
-import torchvision.models as models
 from torchsummary import summary
+import torchvision.models as models
 
 
 class VGG16:
+    """Loads VGG16 model.
+    """
     def __init__(self, batch_norm=False) -> None:
+        """Initialize model based on batch normalization parameter.
+
+        Args:
+            batch_norm (bool, optional): Include batch normalization layer. Defaults to False.
+        """
         self.model = batch_norm
         self._bn = batch_norm
 
@@ -15,14 +26,26 @@ class VGG16:
 
     @property
     def model(self) -> Module:
+        """Getter for the model
+
+        Returns:
+            Module: torch model
+        """
         return self._model
 
     @model.setter
     def model(self, batch_norm: bool) -> None:
+        """Setter for the model. Loads model based on the bool value of batch normalization.
+
+        Args:
+            batch_norm (bool): Include batch normalization layer.
+        """
         self._model = models.vgg16_bn(
             pretrained=True) if batch_norm else models.vgg16(pretrained=True)
 
     def print_summary(self) -> None:
+        """Print summary of the model.
+        """
         print(summary(self._model, input_size=(3, 224, 224)))
 
 
