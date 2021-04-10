@@ -32,3 +32,4 @@ Example VGG:
 1. Check whether the weights are compatible without cuda.
 2. Re-structure the code and include only one main file with cmd arguments.
 3. Add multiple models based on their no of layers.
+4. torchsummary doesn't work with densenet.
